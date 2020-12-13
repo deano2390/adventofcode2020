@@ -66,12 +66,11 @@ func calculateTreeCount(inputSource string, right int, down int) int {
 
 	for true {
 		rowPos += down
+		colPos += right
 
 		row := rows[rowPos]
-		row = buildRow(row, colPos+right+1)
-
-		colPos += right
-		itemOnMap := row[colPos]
+		modPos := colPos % len(row)
+		itemOnMap := row[modPos]
 
 		if itemOnMap == '#' {
 			treeCount++
@@ -83,13 +82,4 @@ func calculateTreeCount(inputSource string, right int, down int) int {
 	}
 
 	return treeCount
-}
-
-func buildRow(row string, requiredWidth int) string {
-
-	for len(row) < requiredWidth {
-		row += row
-	}
-
-	return row
 }
