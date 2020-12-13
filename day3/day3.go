@@ -9,11 +9,28 @@ import (
 
 func main() {
 	partOne()
+	partTwo()
 }
 
 func partOne() {
-	var treeCount = calculateTreeCount("map.txt", 3, 1)
+	treeCount := calculateTreeCount("map.txt", 3, 1)
 	fmt.Printf("part one treeCount: %d\n", treeCount)
+}
+
+func partTwo() {
+
+	total := 1
+	treeCount := calculateTreeCount("map.txt", 1, 1)
+	total *= treeCount
+	treeCount = calculateTreeCount("map.txt", 3, 1)
+	total *= treeCount
+	treeCount = calculateTreeCount("map.txt", 5, 1)
+	total *= treeCount
+	treeCount = calculateTreeCount("map.txt", 7, 1)
+	total *= treeCount
+	treeCount = calculateTreeCount("map.txt", 1, 2)
+	total *= treeCount
+	fmt.Printf("part two total: %d\n", total)
 }
 
 func calculateTreeCount(inputSource string, right int, down int) int {
@@ -51,7 +68,7 @@ func calculateTreeCount(inputSource string, right int, down int) int {
 		rowPos += down
 
 		row := rows[rowPos]
-		row = buildRow(row, colPos+right)
+		row = buildRow(row, colPos+right+1)
 
 		colPos += right
 		itemOnMap := row[colPos]
