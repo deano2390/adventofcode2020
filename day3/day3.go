@@ -8,11 +8,15 @@ import (
 )
 
 func main() {
-	var treeCount = calculateTreeCount("map.txt")
-	fmt.Printf("treeCount: %d\n", treeCount)
+	partOne()
 }
 
-func calculateTreeCount(inputSource string) int {
+func partOne() {
+	var treeCount = calculateTreeCount("map.txt", 3, 1)
+	fmt.Printf("part one treeCount: %d\n", treeCount)
+}
+
+func calculateTreeCount(inputSource string, right int, down int) int {
 
 	file, err := os.Open(inputSource)
 
@@ -31,11 +35,9 @@ func calculateTreeCount(inputSource string) int {
 
 	file.Close()
 
-	downStride := 1
-	strafe := 3
 	runLength := len(rows)
 	patternWidth := len(rows[0])
-	requiredWidth := runLength * strafe
+	requiredWidth := runLength * right
 
 	fmt.Printf("%d runLength\n", runLength)
 	fmt.Printf("%d patternWidth\n", patternWidth)
@@ -46,19 +48,19 @@ func calculateTreeCount(inputSource string) int {
 	treeCount := 0
 
 	for true {
-		rowPos += downStride
+		rowPos += down
 
 		row := rows[rowPos]
-		row = buildRow(row, colPos+strafe)
+		row = buildRow(row, colPos+right)
 
-		colPos += strafe
+		colPos += right
 		itemOnMap := row[colPos]
 
 		if itemOnMap == '#' {
 			treeCount++
 		}
 
-		if rowPos >= runLength-downStride {
+		if rowPos >= runLength-down {
 			break
 		}
 	}
