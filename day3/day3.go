@@ -8,7 +8,13 @@ import (
 )
 
 func main() {
-	file, err := os.Open("map.txt")
+	var treeCount = calculateTreeCount("map.txt")
+	fmt.Printf("treeCount: %d\n", treeCount)
+}
+
+func calculateTreeCount(inputSource string) int {
+
+	file, err := os.Open(inputSource)
 
 	if err != nil {
 		log.Fatalf("failed to open")
@@ -57,7 +63,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("treeCount: %d\n", treeCount)
+	return treeCount
 }
 
 func buildRow(row string, requiredWidth int) string {
