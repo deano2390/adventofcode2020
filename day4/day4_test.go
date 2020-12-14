@@ -4,7 +4,11 @@ import "testing"
 
 func TestSampleInput(t *testing.T) {
 
-	expected := 2
+	expected := 4
+	passports := parsePassports("sample.txt")
+	checkValue(len(passports), expected, t)
+
+	expected = 2
 	actual := getNumberOfValidPassports("sample.txt")
 	checkValue(actual, expected, t)
 
