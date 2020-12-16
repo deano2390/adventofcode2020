@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -21,13 +24,33 @@ func partOne() {
 	fmt.Printf("part one answer: %d\n", solution)
 }
 
-func getHighestSeatID() int {
-	return -1 // TODO
+func getHighestSeatID() int64 {
+
+	file, err := os.Open("input.txt")
+
+	if err != nil {
+		log.Fatalf("failed to open")
+	}
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+
+	var highestSeatID int64 = 0
+
+	for scanner.Scan() {
+		boardingPassStr := scanner.Text()
+		boardingPass := parseBoardingPass(boardingPassStr)
+		printBoardingPass(boardingPass)
+		if boardingPass.seatID > highestSeatID {
+			highestSeatID = boardingPass.seatID
+		}
+	}
+	return highestSeatID
 }
 
-func parseBoardingPass(boardingPass string) BoardingPass {
-	rowStr := boardingPass[0:7]
-	colStr := boardingPass[7:10]
+func parseBoardingPass(boardingPassStr string) BoardingPass {
+	rowStr := boardingPassStr[0:7]
+	colStr := boardingPassStr[7:10]
 
 	rowStr = strings.ReplaceAll(rowStr, "B", "1")
 	rowStr = strings.ReplaceAll(rowStr, "F", "0")
@@ -49,6 +72,11 @@ func parseBoardingPass(boardingPass string) BoardingPass {
 
 	seatID := (row * 8) + col
 
-	fmt.Printf("boardingPass: %s, row:%d, col:%d, seatID:%d\n", boardingPass, row, col, seatID)
-	return BoardingPass{row, col, seatID}
+	boardingPass := BoardingPass{row, col, seatID}
+	printBoardingPass(boardingPass)
+	return boardingPass
+}
+
+func printBoardingPass(boardingPass BoardingPass) {
+	fmt.Printf("boardingPass row:%d, col:%d, seatID:%d\n", boardingPass.row, boardingPass.column, boardingPass.seatID)
 }
