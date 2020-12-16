@@ -26,7 +26,7 @@ func TestSampleInput(t *testing.T) {
 
 }
 
-func checkValue(actual int, expected int, t *testing.T) {
+func checkValue(actual int64, expected int64, t *testing.T) {
 	if actual != expected {
 		t.Errorf("actual was incorrect, got: %d, want: %d.", actual, expected)
 	}
