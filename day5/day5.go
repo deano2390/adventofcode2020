@@ -16,24 +16,47 @@ type BoardingPass struct {
 }
 
 func main() {
-	partOne()
+	part1 := getHighestSeatID()
+	part2 := findMySeat()
+	fmt.Printf("part one answer: %d\n", part1)
+	fmt.Printf("part two answer: %d\n", part2)
 }
 
-func partOne() {
-	solution := getHighestSeatID()
-	fmt.Printf("part one answer: %d\n", solution)
+func findMySeat() int {
+
+	scanner := openFile()
+
+	tickets := make(map[int64]bool)
+
+	for scanner.Scan() {
+		boardingPassStr := scanner.Text()
+		boardingPass := parseBoardingPass(boardingPassStr)
+		tickets[boardingPass.seatID] = true
+	}
+
+	fmt.Printf("map size: %d\n", len(tickets))
+
+	for ticketIndex := 0; ticketIndex < len(tickets); ticketIndex++ {
+		if tickets[int64(ticketIndex)] == false {
+
+			value, isset := tickets[int64(ticketIndex)-1]
+			if isset {
+				fmt.Printf("value: %b\n", value)
+				value, isset := tickets[int64(ticketIndex)+1]
+				if isset {
+					fmt.Printf("value: %b\n", value)
+					return ticketIndex
+				}
+			}
+		}
+	}
+
+	return -1
 }
 
 func getHighestSeatID() int64 {
 
-	file, err := os.Open("input.txt")
-
-	if err != nil {
-		log.Fatalf("failed to open")
-	}
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
+	scanner := openFile()
 
 	var highestSeatID int64 = 0
 
@@ -46,6 +69,18 @@ func getHighestSeatID() int64 {
 		}
 	}
 	return highestSeatID
+}
+
+func openFile() *bufio.Scanner {
+	file, err := os.Open("input.txt")
+
+	if err != nil {
+		log.Fatalf("failed to open")
+	}
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	return scanner
 }
 
 func parseBoardingPass(boardingPassStr string) BoardingPass {
